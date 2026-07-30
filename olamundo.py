@@ -89,3 +89,91 @@ df['NM_UF'].value_counts()
 
 #criando um gráfico de barras
 st.bar_chart(df['NM_UF'].value_counts())
+
+import os
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Caminho exato do arquivo no Google Colab
+caminho_arquivo = "/content/drive/MyDrive/bcdata.sgs.25388.csv"
+
+print("Verificando arquivo e carregando dados...")
+
+if not os.path.exists(caminho_arquivo):
+    print(f"\n O arquivo '{caminho_arquivo}' não foi encontrado!")
+else:
+    try:
+        # Importação configurando o padrão decimal e separador do Banco Central
+        df = pd.read_csv(caminho_arquivo, sep=';', decimal=',')
+
+        # Ajustar colunas para minúsculo e tratar formato de Data
+        df.columns = [col.lower().strip() for col in df.columns]
+        df['data'] = pd.to_datetime(df['data'], format='%d/%m/%Y')
+        df['ano'] = df['data'].dt.year
+
+        print("[SUCESSO] Dados carregados. Iniciando geração das imagens...\n")
+
+        # -----------------------------------------------------------------
+        # 1. GRÁFICO DE LINHA
+        # -----------------------------------------------------------------
+        plt.figure(figsize=(10, 5))
+        plt.plot(df['data'], df['valor'], color='#1f77b4', linewidth=2)
+        plt.title('Evolução Temporal do IBCR-NE', fontsize=12, fontweight='bold', pad=15)
+        plt.xlabel('Anos da Série Histórica', fontsize=10)
+        plt.ylabel('Valor do Indicador', fontsize=10)
+        plt.grid(True, linestyle='--', alpha=0.5)
+        plt.tight_layout()
+
+        # Salva o gráfico 1 na pasta
+        plt.savefig('grafico_linha.png', dpi=300)
+        plt.show()
+
+        # ------------------------------------------------
+        # 2. GRÁFICO DE BARRAS
+        # ------------------------------------------------
+        media_anual = df.groupby('ano')['valor'].mean().reset_index()
+
+        plt.figure(figsize=(12, 5))
+        plt.bar(media_anual['ano'], media_anual['valor'], color='teal', edgecolor='black', alpha=0.8)
+        plt.title('Comparativo de Média Anual do Indicador', fontsize=12, fontweight='bold', pad=15)
+        plt.xlabel('Ano Correspondente', fontsize=10)
+        plt.ylabel('Valor Médio Registrado', fontsize=10)
+        plt.xticks(media_anual['ano'], rotation=45)
+        plt.grid(axis='y', linestyle='--', alpha=0.5)
+        plt.tight_layout()
+
+        # Salva o gráfico 2 na pasta
+        plt.savefig('grafico_barras.png', dpi=300)
+        plt.show()
+
+        # -----------------------------------------------------------------
+        # 3. GRÁFICO DE PIZZA
+        # -----------------------------------------------------------------
+
+        v_min, v_max = df['valor'].min(), df['valor'].max()
+        intervalo = (v_max - v_min) / 3
+
+        limite_baixo = v_min + intervalo
+        limite_medio = v_min + (2 * intervalo)
+
+        def classificar_faixa(val):
+            if val <= limite_baixo:
+                return 'Faixa Baixa'
+            elif val <= limite_medio:
+                return 'Faixa Média'
+            else:
+                return 'Faixa Alta'
+
+        df['categoria'] = df['valor'].apply(classificar_faixa)
+        contagem_categorias = df['categoria'].value_counts()
+
+        # Desenhar o gráfico de pizza
+        plt.figure(figsize=(8, 6))
+        cores = ['#66b3ff', '#99ff99', '#ff9999']
+
+        plt.pie(contagem_categorias,
+                labels=contagem_categorias.index,
+                autopct='%1.1f%%',
+                startangle=140,
+                colors=cores,
+                wedgeprops={'edgecolor': 'black', 'linewidth': 1, 'antialiased': True})
