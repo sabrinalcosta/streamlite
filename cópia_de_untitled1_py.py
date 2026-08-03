@@ -10,6 +10,7 @@ Original file is located at
 """
 
 #UPLOAD DA BASE DE DADOS
+!pip install streamlit
 
 from google.colab import files
 uploaded = files.upload()
