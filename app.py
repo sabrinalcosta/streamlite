@@ -66,7 +66,7 @@ ax2.set_title('Média de Notas por Categoria de Horas de Estudo')
 ax2.set_xlabel('Horas de Estudo')
 ax2.set_ylabel('Média de Notas')
 ax2.grid(False)
-ax2.tick_params(axis='x', rotation=0, ha='right')
+ax2.tick_params(axis='x', rotation=0)
 plt.tight_layout()
 st.pyplot(fig2)
 
