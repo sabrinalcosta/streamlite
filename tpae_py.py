@@ -97,7 +97,7 @@ plt.title('Média de Notas por Categoria de Horas de Jogo')
 plt.xlabel('Horas de Jogo')
 plt.ylabel('Média de Notas')
 plt.grid(False) # Removido as linhas de grade
-plt.xticks(rotation=0, ha='right')
+plt.xticks(rotation=0)
 plt.tight_layout()
 plt.show()
 
