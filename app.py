@@ -83,7 +83,7 @@ ax3.set_title('Média de Notas por Categoria de Horas de Jogo')
 ax3.set_xlabel('Horas de Jogo')
 ax3.set_ylabel('Média de Notas')
 ax3.grid(False)
-ax3.tick_params(axis='x', rotation=0, ha='right')
+ax3.tick_params(axis='x', rotation=0)
 plt.tight_layout()
 st.pyplot(fig3)
 
