@@ -65,7 +65,7 @@ h1, h2, h3, h4, h5, h6 {
 st.title('Análise do Impacto dos Jogos nas Notas Acadêmicas')
 
 # Load data
-df = pd.read_csv('/content/Gaming_Academic_Performance.csv')
+df = pd.read_csv("Gaming_Academic_Performance.csv")
 
 # Rename columns
 df = df.rename(columns={
