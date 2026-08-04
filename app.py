@@ -86,7 +86,7 @@ df = df.rename(columns={
 })
 
 st.subheader('Visão Geral dos Dados')
-st.write(df.head(25))
+st.write(df.head(50))
 
 # --- Sidebar for analysis selection ---
 st.sidebar.title('Opções de Análise')
